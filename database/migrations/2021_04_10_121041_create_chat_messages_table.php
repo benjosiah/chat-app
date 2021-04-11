@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 class CreateChatMessagesTable extends Migration
 {
     /**
-     * Run the migrations.
+     * Run the migrations. oij
      *
      * @return void
      */
