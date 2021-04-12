@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 use App\Models\ChatRoom;
 use App\Models\ChatMessage;
+use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
@@ -19,7 +20,10 @@ class ChatController extends Controller
     // }
 
     public function messages($chatroom_id){
-        $messages = ChatMessage::where('chat_room_id', $chatroom_id)->get();
+        $messages = ChatMessage::where('chat_room_id', $chatroom_id)
+        ->with('user')
+        ->orderBy('created_at', 'DESC')
+        ->get();
         return $messages;
     }
 
