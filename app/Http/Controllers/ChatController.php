@@ -6,6 +6,7 @@ use App\Models\ChatMessage;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use App\Events\NewChatMessage;
 
 
 class ChatController extends Controller
@@ -33,6 +34,7 @@ class ChatController extends Controller
         $message->user_id = Auth::user()->id;
         $message->message = $request['message'];
         $message->save();
+        broadcast(new NewChatMessage($message))->toOthers();
         return $message;
     }
 
