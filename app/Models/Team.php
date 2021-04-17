@@ -5,15 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class ChatMessage extends Model
+class Team extends Model
 {
     use HasFactory;
 
     public function chatRoom(){
-        return $this->belongsTo('App\Models\ChatRoom', 'chat_room_id');
+        return $this->hasMany('App\Models\ChatRoom');
     }
 
-    public function user(){
-        return $this->belongsTo('App\Models\User');
-    }
 }

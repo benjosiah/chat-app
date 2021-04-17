@@ -10,6 +10,10 @@ class ChatRoom extends Model
     use HasFactory;
 
     public function message(){
-        return $this->hasMany('App\Model\ChatMessage');
+        return $this->hasMany('App\Models\ChatMessage');
+    }
+
+    public function team(){
+        return $this->belongsTo('App\Models\Team', 'team_id');
     }
 }

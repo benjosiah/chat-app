@@ -30,6 +30,14 @@ Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->name('dashboard');
 
-Route::middleware('auth:sanctum')->get('chat/rooms', [ChatController::class, 'chatRooms']);
+Route::middleware('auth:sanctum')->get('team/{team_id}/rooms', [ChatController::class, 'chatRooms']);
 Route::middleware('auth:sanctum')->get('chat/{room_id}/messages', [ChatController::class, 'messages']);
 Route::middleware('auth:sanctum')->post('chat/{room_id}/message', [ChatController::class, 'newMessage']);
+
+Route::middleware('auth:sanctum')->get('/teams', [ChatController::class, 'userTeam']);
+Route::middleware('auth:sanctum')->post('team/{team_id}', [ChatController::class, 'addMemer']);
+Route::middleware('auth:sanctum')->post('team', [ChatController::class, 'newTeam']);
+
+Route::middleware('auth:sanctum')->post('team/{team_id}/chat', [ChatController::class, 'newChatRoom']);
+// Route::middleware('auth:sanctum')->get('chat/{room_id}/messages', [ChatController::class, 'messages']);
+// Route::middleware('auth:sanctum')->post('chat/{room_id}/message', [ChatController::class, 'newMessage']);

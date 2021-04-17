@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div class="flex">
+        <div class="flex"> 
             <span>
                 {{message.user.name}}:
             </span>
