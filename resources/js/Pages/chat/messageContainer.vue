@@ -1,6 +1,6 @@
 <template>
-    <div class="h-96">
-       <div class="h-full w-full px-5 flex flex-col-reverse overflow-scroll">
+    <div class="h-96 pt-20 overflow-x-hidden overflow-y-scroll mt-20">
+       <div class="h-full w-full px-5 flex flex-col-reverse">
            <div v-for="(message, index) in messages" :key="index">
                <message-item :message="message" />
            </div>

@@ -1,7 +1,7 @@
 <template>
     <app-layout>
-        <template #header>
-            <h2 class="font-semibold text-xl text-gray-800 leading-tight">
+        <template #header >
+            <h2 class="font-semibold text-xl text-gray-100 leading-tight">
                 <chat-room-seection
                     v-if="currentRoom.id"
                     :currentRoom="currentRoom"
@@ -10,9 +10,9 @@
                 />
             </h2>
         </template>
-        <div class="py-12">
+        <div class="py-12 ">
             <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="bg-white overflow-hidden shadow-xl sm:rounded-lg">
+                <div class="overflow-hidden shadow-xl sm:rounded-lg bg-gray-100"> 
                     <message-container :messages="messages"/>
                     <message-input :room="currentRoom"
                     v-on:messagesent="getMessages()"
