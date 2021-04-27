@@ -4,16 +4,39 @@ namespace App\Http\Controllers;
 use App\Models\ChatRoom;
 use App\Models\ChatMessage;
 use App\Models\User;
+use App\Models\Team;
+use App\Models\Member;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 use App\Events\NewChatMessage;
+use Inertia\Inertia;
 
 
 class ChatController extends Controller
 {
-    public function chatRooms($team_id){
-        $chatrooms = ChatRoom::where('team_id', $team_id);
-        return $chatrooms;
+
+    public function dashboard(){
+        return Inertia::render('Welcome', [
+         
+        ]);
+    }
+    public function chatRoom($team_id){
+        $chatrooms = ChatRoom::where('team_id', $team_id)
+            ->get();
+        foreach($chatrooms as $chatroom){
+            $chatroom->team;
+        }
+        $teams = Member::where('user_id', Auth::user()->id)
+        ->orWhere('team_id',1)
+        ->with('team')
+        ->orderBy('created_at', 'DESC')
+        ->get();
+        // return $chatrooms;
+        return Inertia::render('chat/ChatRoom',[
+            'chatRooms'=>$chatrooms,
+            'teams'=>$teams
+        ]);
+
     }
 
     // public function chatRoom($chatromm_id){
@@ -42,8 +65,10 @@ class ChatController extends Controller
         $message->chat_room_id = $chatroom_id;
         $message->user_id = Auth::user()->id;
         $message->message = $request['message'];
-        $message->save();
-        broadcast(new NewChatMessage($message))->toOthers();
+        if($message->save()){
+            // broadcast(new NewChatMessage($message))->toOthers();
+        }
+        
         return $message;
     }
 
@@ -54,6 +79,12 @@ class ChatController extends Controller
             $member = new Member;
             $member->user_id = Auth::user()->id;
             $member->team_id = $team->id;
+            $member->save();
+
+            $chatroom = new chatRoom;
+            $chatroom->name = "Random";
+            $chatroom->team_id = $team->id;
+            $chatroom->save();
             return $team;
         }
         
@@ -67,12 +98,16 @@ class ChatController extends Controller
         return $member;   
     }
 
-    public function userTeam(Request $request){
-        $teams = Member::where('user', Auth::user()->id)
+    public function Teams(){
+        $teams = Member::where('user_id', Auth::user()->id)
+        ->orWhere('team_id',1)
         ->with('team')
         ->orderBy('created_at', 'DESC')
         ->get();
-        return $teams;   
+        return Inertia::render('Dashboard', [
+         'teams'=>$teams
+        ]); 
     }
+
     
 }

@@ -1,6 +1,6 @@
 <template>
-    <div>
-        <div class="flex"> 
+    <div> 
+        <div class=""> 
             <span>
                 {{message.user.name}}:
             </span>
@@ -8,7 +8,10 @@
                 {{getTime}}
             </span>
         </div>
-         {{message.message}}
+        <div v-html="message.message">
+
+        </div>
+        
     </div>
 </template>
 <script>

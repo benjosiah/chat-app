@@ -16,16 +16,20 @@ class ChatRoomSeeder extends Seeder
     {
         $chatroom= [
             [
-                'name'=>'General',
+                'name'=>'Random',
+                'team_id'=>1
             ],
             [
                 'name'=>'Tech',
+                'team_id'=>1
             ],
             [
-                'name'=>'Design',
+                'name'=>'Sport',
+                'team_id'=>1
             ],
             [
                 'name'=>'Art',
+                'team_id'=>1
             ],
         ];
         DB::table("chat_rooms")->insert($chatroom);

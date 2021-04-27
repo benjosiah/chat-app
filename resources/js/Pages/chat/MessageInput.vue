@@ -1,20 +1,21 @@
 <template>
     <div class=" w-full p-5 border-t border-solid">
         <div class="flex items-end justify-start relative">
+           
             <textarea v-model="message" 
-                cols=""
-                rows="1.4"
+            
                 placeholder="Say something... " 
-                class="outline-none px-3 w-full rounded focus:outline-none border-solid border-0 border-b focus:border-transparent"
-                @keyup.prevent.enter="newMessage"
+                class="outline-none h-auto px-3 w-full rounded focus:outline-none border-solid border-0 border-b focus:border-transparent"
                 >
                 
             </textarea>
-             <button class="absolute focus:outline-none hover:bg-blue-900 text-white px-2 py-1 right-1 bottom-1 rounded bg-gray-700" @click="newMessage">
+             <button class="absolute focus:outline-none hover:bg-blue-900 text-white px-2 py-1 right-1 bottom-1 rounded bg-gray-700"
+              @click="newMessage">
                 Send
             </button>
                
         </div>
+         {{message}}
     </div>
 </template>
 <script>
@@ -33,7 +34,7 @@ export default {
                 return
             }
             axios.post('/chat/'+this.room.id+'/message',{ 
-                'message':this.message
+                'message':this.message,
             }).then(res =>{
                 if (res.status == 201) {
                     this.message = "";
