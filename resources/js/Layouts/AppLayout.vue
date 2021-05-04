@@ -153,8 +153,8 @@
                             </div>
 
                             <div>
-                                <div class="font-medium text-base text-gray-800">{{ $page.props.user.name }}</div>
-                                <div class="font-medium text-sm text-gray-500">{{ $page.props.user.email }}</div>
+                                <div class="font-medium text-base text-gray-300">{{ $page.props.user.name }}</div>
+                                <div class="font-medium text-sm text-gray-100">{{ $page.props.user.email }}</div>
                             </div>
                         </div>
 
@@ -178,7 +178,7 @@
                             <template v-if="$page.props.jetstream.hasTeamFeatures">
                                 <div class="border-t border-gray-200"></div>
 
-                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                <div class="block px-4 py-2 text-xs text-gray-300">
                                     Manage Team
                                 </div>
 
@@ -194,7 +194,7 @@
                                 <div class="border-t border-gray-200"></div>
 
                                 <!-- Team Switcher -->
-                                <div class="block px-4 py-2 text-xs text-gray-400">
+                                <div class="block px-4 py-2 text-xs text-gray-300">
                                     Switch Teams
                                 </div>
 

@@ -5,11 +5,11 @@
             <textarea v-model="message" 
             
                 placeholder="Say something... " 
-                class="outline-none h-auto px-3 w-full rounded focus:outline-none border-solid border-0 border-b focus:border-transparent"
+                class="outline-none h-8 px-3 py-2 w-11/12 mr-1 rounded focus:outline-none border-solid border-0 border-b focus:border-transparent"
                 >
                 
             </textarea>
-             <button class="absolute focus:outline-none hover:bg-blue-900 text-white px-2 py-1 right-1 bottom-1 rounded bg-gray-700"
+             <button class="focus:outline-none hover:bg-blue-900 text-white px-2 py-1 right-1 bottom-1 rounded bg-gray-700"
               @click="newMessage">
                 Send
             </button>

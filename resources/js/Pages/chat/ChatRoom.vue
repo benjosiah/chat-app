@@ -49,13 +49,13 @@
          <div v-if="showinvite" class="md:w-1/3 sm:w-full bg-gray-100 p-10 absolute top-8 md:left-20 sm:left-0">
                 <h3>Add Member to </h3>
              <div>
-                <jet-label for="name" value="Name" />
-                <jet-input id="name" type="text" class="mt-1 block w-full" v-model="name" required autofocus autocomplete="name" />
+                <jet-label for="email" value="Email" />
+                <jet-input id="email" type="email" class="mt-1 block w-full" v-model="email" required autofocus/>
             </div>
 
             <div class="flex items-center justify-end mt-4">
                <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" @click="newAdd()" >
-                    Create
+                    Add
                 </jet-button>
 
                 <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing" @click="close('add')">
@@ -80,7 +80,7 @@
 
 
     export default {
-        props:['chatRooms', 'teams'],
+        props:['team_id', 'teams'],
         components: {
             AppLayout,
             Welcome,
@@ -94,6 +94,7 @@
         data(){
             return{
                 currentRoom:[],
+                chatRooms:[],
                 messages: [],
                 team:[],
                 showCreateTeam:false,
@@ -124,14 +125,25 @@
                     });
                 }
             },
-
+            rooms(){
+                axios.get('/chat/'+this.team_id+'/rooms').then(res =>{
+                    this.chatRooms = res.data
+                    this.setRoom(this.chatRooms[0])
+                       console.log(res.data)
+                       console.log(this.chatRooms)
+                    }).catch(error =>{
+                        console.log(error)
+                })
+            },
             newGroup(){
                 axios.post('/team/'+this.currentRoom.team.id+'/chat',{ 
                     'name':this.name,
                 }).then(res =>{
                     if (res.status == 201) {
                         this.name = "";
-                        this.close()
+                        this.close('group')
+                        this.rooms()
+                       
                     }
                 }).catch(error =>{
                     console.log(error)
@@ -139,13 +151,15 @@
             },
 
              newAdd(){
-                axios.post('team/'+this.currentRoom.team.id,{ 
-                    'email':this.name,
+                axios.post('/add-member/'+this.currentRoom.team.id,{ 
+                    'email':this.email,
                 }).then(res =>{
                     if (res.status == 201) {
                         this.name = "";
-                        this.close('group')
+                        this.close('add')
                     }
+                        this.name = "";
+                        this.close('add')
                 }).catch(error =>{
                     console.log(error)
                 })
@@ -204,8 +218,9 @@
             }
         },
         created(){
-            this.setRoom(this.chatRooms[0])
-            
+            this.chatRooms = this.rooms()
+            console.log(this.team_id)
+            // this.rooms()
             
         }
     }

@@ -1,18 +1,14 @@
 <template>
     <app-layout>
-        <template #header >
-         
-      
-        </template>
         <div class="py-12 ">
-            <div class="max-w-7xl mx-auto sm:px-6 lg:px-8">
-                <div class="overflow-hidden shadow-xl sm:rounded-lg bg-gray-100"> 
-                   <div v-for="(team, index) in teams" :key="index">
-                        <inertia-link :href="route('chatroom', {'team_id':team.id})" class="ml-4 text-sm text-gray-700 underline">
+            <div class="max-w-5xl mx-auto sm:px-6 lg:px-8">
+                <div class="overflow-hidden shadow-xl sm:rounded-lg bg-gray-100 flex py-2 flex-wrap"> 
+                   <div v-for="(team, index) in teams" :key="index" class="w-full px-1 py-2 mt-1 rounded bg-gray-900" >
+                        <inertia-link class="text-gray-100" :href="route('chatroom', {'team_id':team.team.id})">
                             {{team.team.name}}
                         </inertia-link>
                    </div>
-                    <div>
+                    <div class="pt-2">
                         <jet-button class="ml-4" :class="{ 'opacity-25': form.processing }" :disabled="form.processing " @click="open()" >
                              create a team
                         </jet-button>
@@ -53,7 +49,6 @@
     import JetLabel from '@/Jetstream/Label'
 
     export default {
-        props:['teams'],
         components: {
             AppLayout,
             Welcome,
@@ -69,6 +64,7 @@
             return{
                name:'',
                show:false,
+               teams:[],
                form:{}
             }
         },
@@ -88,10 +84,19 @@
                     if (res.status == 201) {
                         this.name = "";
                         this.close()
+                        this.getTeams()
                     }
                 }).catch(error =>{
                     console.log(error)
                 })
+            },
+            getTeams(){
+                 axios.get('/teams').then(res =>{
+                   this.teams=res.data
+                }).catch(error =>{
+                    console.log(error)
+                })
+
             },
             open(){
                 console.log("clicked")
@@ -102,6 +107,7 @@
             }
         },
         created(){
+            this.getTeams();
             console.log(this.teams)
         }
     }

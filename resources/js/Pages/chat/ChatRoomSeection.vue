@@ -1,7 +1,7 @@
 <template>
     <div class="flex flex-wrap items-center justify-between "> 
         <div>
-         
+         {{team}}
         </div>
         <select
             v-model="selected"

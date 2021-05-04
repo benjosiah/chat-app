@@ -7,6 +7,7 @@ use App\Models\User;
 use App\Models\Team;
 use App\Models\Member;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Http\Request;
 use App\Events\NewChatMessage;
 use Inertia\Inertia;
@@ -33,9 +34,19 @@ class ChatController extends Controller
         ->get();
         // return $chatrooms;
         return Inertia::render('chat/ChatRoom',[
-            'chatRooms'=>$chatrooms,
+            'team_id'=>$team_id,
             'teams'=>$teams
         ]);
+
+    }
+    public function chatRooms($team_id){
+        $chatrooms = ChatRoom::where('team_id', $team_id)
+            ->get();
+        foreach($chatrooms as $chatroom){
+            $chatroom->team;
+        }
+        return $chatrooms;
+       
 
     }
 
@@ -57,7 +68,7 @@ class ChatController extends Controller
         $chatroom->team_id = $team_id;
         $chatroom->save();
         // broadcast(new NewChatMessage($message))->toOthers();
-        return $message;
+        return $chatroom;
     }
 
     public function newMessage(Request $request, $chatroom_id){
@@ -66,7 +77,7 @@ class ChatController extends Controller
         $message->user_id = Auth::user()->id;
         $message->message = $request['message'];
         if($message->save()){
-            // broadcast(new NewChatMessage($message))->toOthers();
+            broadcast(new NewChatMessage($message))->toOthers();
         }
         
         return $message;
@@ -90,23 +101,35 @@ class ChatController extends Controller
         
     }
 
-    public function addMemer(Request $request, $team_id){
+    public function addMember(Request $request, $team_id){
         $user = User::where('email', $request['email'])->first();
-        $member = new Member;
-        $member->user_id = $user->id;
-        $member->team_id = $team_id;
-        return $member;   
+        if ( !empty($user)) {
+            $check = Member::where('user_id', $user->id)
+            ->where('team_id', $team_id)
+            ->first();
+            if(empty($check)){
+                $member = new Member;
+                $member->user_id = $user->id;
+                $member->team_id = $team_id;
+                $member->save();
+                return $member; 
+            }
+        }
+       
+        return;
+        
     }
 
     public function Teams(){
         $teams = Member::where('user_id', Auth::user()->id)
-        ->orWhere('team_id',1)
         ->with('team')
         ->orderBy('created_at', 'DESC')
         ->get();
-        return Inertia::render('Dashboard', [
-         'teams'=>$teams
-        ]); 
+       return $teams;
+    }
+
+    public function getDashboard(){
+        return Inertia::render('Dashboard'); 
     }
 
     

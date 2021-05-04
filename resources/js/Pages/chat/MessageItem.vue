@@ -1,7 +1,7 @@
 <template>
     <div> 
         <div class=""> 
-            <span>
+            <span class=" font-bold text-lg">
                 {{message.user.name}}:
             </span>
             <span>
