@@ -15,7 +15,7 @@
             </button>
                
         </div>
-         {{message}}
+         
     </div>
 </template>
 <script>
